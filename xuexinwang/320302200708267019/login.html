@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账户绑定 - 学信档案</title>
+  <meta name="referrer" content="no-referrer">
+  <link rel="shortcut icon" href="data:,"/>
+  <style>
+    body { margin: 0; background: #eceef3; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; color: #21242a; }
+    .wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+    .bind-account { width: 100%; max-width: 420px; background: #fff; border-radius: 12px; padding: 32px 28px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+    .title { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .description { font-size: 14px; color: #5b6168; margin: 0 0 22px; }
+    .van-cell { display: flex; align-items: center; border: 1px solid #e1e6ee; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; background: #fafbfc; }
+    .van-cell:focus-within { border-color: #56bce8; background: #fff; }
+    .van-field__left-icon { display: flex; align-items: center; padding-right: 10px; color: #5b6168; }
+    .van-field__body { flex: 1; }
+    .van-field__control { width: 100%; border: none; outline: none; background: transparent; font-size: 15px; }
+    .button-container { margin-top: 16px; }
+    .van-button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #46aede; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
+    .van-button:hover { background: #2f99cc; }
+    .validation-summary-errors { background: #fff1f0; color: #cf1322; padding: 8px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 13px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="bind-account">
+      <h1 class="title">账户绑定</h1>
+      <p class="description">初次访问请输入证件号码（身份证号）与密码进行绑定（默认密码 123456）</p>
+      <form role="form" id="fm1">
+        <div class="validation-summary-errors" id="error-alert"></div>
+
+        <div class="van-cell">
+          <div class="van-field__left-icon">
+            <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.3,13.9 C12.3,9.7 15.8,6.2 20,6.2 C24.2,6.2 27.7,9.7 27.7,13.9 C27.7,18.2 24.2,21.6 20,21.6 C15.8,21.6 12.3,18.2 12.3,13.9 M26.1,22.8 C29,20.9 30.8,17.6 30.8,13.8 C30.8,7.8 26,2.9 20,2.9 C14,2.9 9.2,7.8 9.2,13.8 C9.2,17.6 11,20.9 13.9,22.8 C7.3,25.3 2.7,31.6 2.7,38.9 C2.7,39.9 3.3,40.5 4.3,40.5 C5.2,40.5 5.9,39.9 5.9,38.9 C5.9,31.2 12.3,24.8 20,24.8 C27.7,24.8 34.1,31.1 34.1,38.9 C34.1,39.9 34.8,40.5 35.7,40.5 C36.7,40.5 37.3,39.7 37.3,38.9 C37.3,31.6 32.6,25.3 26.1,22.8" stroke="#333" stroke-width="0.2" fill="#333"/>
+            </svg>
+          </div>
+          <div class="van-field__body">
+            <input type="text" id="username" name="username" class="van-field__control" autocomplete="off" placeholder="请输入证件号码（身份证号）"/>
+          </div>
+        </div>
+
+        <div class="van-cell">
+          <div class="van-field__left-icon">
+            <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+              <rect stroke="#333" stroke-width="2" x="16.6" y="22.4" width="1.9" height="7.7" rx="0.9"/>
+              <path d="M5.2,15.6 C4.2,15.6 3.4,16.4 3.4,17.3 L3.4,33.9 C3.4,34.8 4.2,35.6 5.2,35.6 L29.8,35.6 C30.8,35.6 31.6,34.8 31.6,33.9 L31.6,17.3 C31.6,16.4 30.8,15.6 29.8,15.6 L5.2,15.6 Z M9.9,12.2 L25.1,12.2 L25.1,11 C25.1,6.8 21.7,3.4 17.5,3.4 C13.3,3.4 9.9,6.8 9.9,11 L9.9,12.2 Z M6.4,12.2 L6.4,11 C6.4,4.9 11.4,0 17.5,0 C23.6,0 28.5,4.9 28.5,11 L28.5,12.2 L29.8,12.2 C32.7,12.2 35,14.5 35,17.3 L35,33.9 C35,36.7 32.7,39 29.8,39 L5.2,39 C2.3,39 0,36.7 0,33.9 L0,17.3 C0,14.5 2.3,12.2 5.2,12.2 L6.4,12.2 Z" fill="#333"/>
+            </svg>
+          </div>
+          <div class="van-field__body">
+            <input type="password" id="password" name="password" class="van-field__control" autocomplete="off" placeholder="请输入密码"/>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button type="button" id="btn-submit" class="van-button">
+            <span class="van-button__text">确定</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="./config.js"></script>
+  <script>
+    (function () {
+      function withTimestamp(url) {
+        try {
+          const target = new URL(url, window.location.href);
+          target.searchParams.set('t', Date.now().toString());
+          return target.toString();
+        } catch (error) {
+          return url;
+        }
+      }
+
+      function ensureFreshTimestamp() {
+        try {
+          const currentUrl = new URL(window.location.href);
+          var rawTimestamp = (currentUrl.searchParams.get('t') || '').trim();
+          var timestamp = Number(rawTimestamp);
+          var isValidTimestamp = rawTimestamp !== '' && Number.isFinite(timestamp);
+          if (isValidTimestamp && Math.abs(Date.now() - timestamp) <= 5000) {
+            return true;
+          }
+          window.location.replace(withTimestamp(window.location.href));
+          return false;
+        } catch (error) {
+          return true;
+        }
+      }
+
+      if (!ensureFreshTimestamp()) {
+        return;
+      }
+
+      function navigate(url) {
+        window.location.href = withTimestamp(url);
+      }
+
+      function showError(msg) {
+        var box = document.getElementById('error-alert');
+        box.textContent = msg;
+        box.style.display = 'block';
+      }
+
+      function hideError() {
+        var box = document.getElementById('error-alert');
+        box.textContent = '';
+        box.style.display = 'none';
+      }
+
+      document.getElementById('btn-submit').addEventListener('click', function () {
+        hideError();
+        var username = (document.getElementById('username').value || '').trim();
+        var password = (document.getElementById('password').value || '').trim();
+        if (!username) {
+          showError('证件号码不能为空');
+          return;
+        }
+        if (!password) {
+          showError('密码不能为空');
+          return;
+        }
+        // config.js 是扁平结构：XUEXIN_CONFIG.accounts[证件号码] = { 姓名, 证件号码, password, username, display_name, ... }
+        var account = (window.XUEXIN_CONFIG && window.XUEXIN_CONFIG.accounts || {})[username];
+        if (!account || account.password !== password) {
+          showError('证件号码或密码错误');
+          return;
+        }
+        // 整个 account 写入 localStorage，index.html / report.html 后续渲染直接读 user[姓名] 等键
+        localStorage.setItem('web004_user', JSON.stringify(account));
+        navigate('./index.html');
+      });
+
+      document.getElementById('password').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          document.getElementById('btn-submit').click();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
