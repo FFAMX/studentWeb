@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no,viewport-fit=cover">
+    <title>学信档案</title>
+    <link rel="icon" href='https://t1.chei.com.cn/archive/favicon.ico' type="image/x-icon">
+    <link rel="stylesheet" href='https://t1.chei.com.cn/archive/fonts/chsi-font.css' />
+    <link rel="stylesheet" href='https://t2.chei.com.cn/archive/mobile/css/app.css?v=20240717' />
+    <link rel="stylesheet" href='https://t1.chei.com.cn/common/ch/iconfont.css' />
+    <link rel="stylesheet" href='https://t1.chei.com.cn/common/css/font/RareWords/RareWordsFonts.css' />
+    <script src='https://t1.chei.com.cn/common/js/vue/2.5.6/vue.min.js'></script>
+    <script src='https://t1.chei.com.cn/archive/mobile/js/vant1.47/vant.min.js'></script>
+    <script src='https://t1.chei.com.cn/archive/mobile/js/vendors-1.0.0.js'></script>
+    <script src='https://t2.chei.com.cn/archive/mobile/js/app-1.0.3.js'></script>
+    <script src='https://t3.chei.com.cn/archive/mobile/js/lodash.min.js'></script>
+    <script src='https://t4.chei.com.cn/archive/mobile/js/jweixin-1.6.0.js'></script>
+    
+<link rel="stylesheet" href="./assets/pages/index/index.css">
+    <script src="./config.js"></script>
+</head>
+
+<body>
+    <script src="./build-data.js"></script>
+    <div id="app" class="my-container" v-cloak>
+
+        <img src='https://t1.chei.com.cn/common/wap/images/share_xxda.jpg' width='0' height='0'
+            style='position: absolute;top:-100px;left: 0' />
+        <div class="my-header">
+            <a href="./index.html" class="logo"></a>
+        </div>
+
+        <!-- 广告栏 -->
+        <div class="vote-part">
+            <a href="https://my.chsi.com.cn/zyzsk/wap/yxmyd/schappraisal?from=wap_main" target="_blank">
+                <div class="card-list">
+                    <div class="flex1">
+                        <div class="myd-top">
+                            <h4 class="bt-text">院校满意度</h4>
+                            <div class="myd-totle">累计投票<span>15116</span></div>
+                        </div>
+                        <div class="sub-wrap">{{schoolInfo}}</div>
+                    </div>
+                    <div class="go-btn">去评价</div>
+                </div>
+            </a>
+            <!-- <div class="card-list">
+                <div class="card-left-img"><img src="./assets/images/zdxx.png" width="42">
+                </div>
+                <h4 class="flex1 bt-text show-line2">主动学习能力测试</h4>
+                <div class="go-btn">去测评</div>
+            </div> -->
+            <div id="vote_wap" style="display: block;"><a
+                    href="https://xz.chsi.com.cn/survey/index.action?from=main-wap" style="display:block"
+                    target="_blank" class="vote-jy-part vote_bg_xzcp">
+                    <h4 class="vote-left"><span class="vote-text">测测哪种职业更适合自己？</span><span class="go-ahead">立即前往<i
+                                class="iconfont" title="立即前往"></i></span></h4>
+                    <div class="right-img"></div>
+                </a>
+            </div>
+        </div>
+        <div class="menu-part">
+            <van-row>
+                <van-col span="8">
+                    <a href="./jiaoyu_xinxi.html" class="menu-a">
+                        <span class="menu-img xjxl-img"></span><br />
+                        高等教育信息
+                    </a>
+                </van-col>
+                <van-col span="8">
+                    <a href="./report.html" class="menu-a">
+                        <span class="menu-img zxyz-img"></span><br />
+                        在线验证报告
+                    </a>
+                </van-col>
+                <van-col span="8">
+                    <a href="https://my.chsi.com.cn/archive/rzbg/index.action" class="menu-a">
+                        <span class="menu-img rzbg-img"></span><br />
+                        学历学位认证<br />与成绩验证
+                    </a>
+                </van-col>
+            </van-row>
+            <van-row>
+                <van-col span="8">
+                    <a href="https://my.chsi.com.cn/archive/gjhz/index.action" class="menu-a">
+                        <span class="menu-img gjhz-img"></span><br />
+                        出国报告发送
+                    </a>
+                </van-col>
+                <van-col span="8">
+                    <a href="https://my.chsi.com.cn/archive/wap/gdjy/xj/collate.action" class="menu-a">
+                        <span class="menu-img txjd-img"></span><br />
+                        毕业证书图像<br />校对
+                        <!-- <span class="hot-laber">优先</span> -->
+                    </a>
+                </van-col>
+            </van-row>
+            <van-row>
+                <van-col span="8">
+                    <a href="https://my.chsi.com.cn/archive/survey/index.action" class="menu-a">
+                        <span class="menu-img myd-img"></span><br />
+                        学校满意度
+                    </a>
+                </van-col>
+                <van-col span="8">
+                    <a href="https://xz.chsi.com.cn/survey/wap/index.action" class="menu-a">
+                        <span class="menu-img cp-img"></span><br />
+                        个人测评
+                    </a>
+                </van-col>
+                <van-col span="8">
+                    <a href="https://my.chsi.com.cn/archive/wap/auth/show.action" class="menu-a sq-num">
+                        <van-tag round type="danger" v-if="sqNum>0">{{sqNum}}</van-tag>
+                        <span class="menu-img auth-img"></span><br />
+                        信息核查确认
+                    </a>
+                </van-col>
+            </van-row>
+        </div>
+        <van-tabbar fixed z-index="1000" v-model="activeBottom">
+            <van-tabbar-item>
+                <i class="iconfont" slot="icon" title="home">&#xe6d7;</i>
+                <span>首页</span>
+            </van-tabbar-item>
+            <van-tabbar-item @click="goUrl('https://my.chsi.com.cn/archive/wap/gdjy/index.action')">
+                <!-- <i class="iconfont" slot="icon" title="xjxl">&#xe6d9;</i> -->
+                <img src="https://t1.chei.com.cn/archive/images/xj/xjxlxw.svg"
+                    style="height:.613rem;margin: -0.04rem 0 0.04rem;" slot="icon" />
+                <span>学籍学历学位</span>
+            </van-tabbar-item>
+            <van-tabbar-item @click="goUrl('https://xz.chsi.com.cn/survey/wap/index.action')">
+                <i class="iconfont" slot="icon" title="cp">&#xe6d6;</i>
+                <span>个人测评</span>
+            </van-tabbar-item>
+            <van-tabbar-item @click="goUrl('https://my.chsi.com.cn/archive/wap/gdjy/index.action')">
+                <i class="iconfont" slot="icon" title="my">&#xe6d8;</i>
+                <span>我的</span>
+            </van-tabbar-item>
+        </van-tabbar>
+        </div>
+
+    
+
+<script src="./assets/shared/network-error.js"></script>
+<script src="./assets/pages/index/index.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"216c9452405d41c881e59bf5ec1cd053","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+
+</html>
