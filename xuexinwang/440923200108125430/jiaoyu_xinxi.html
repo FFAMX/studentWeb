@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no,viewport-fit=cover">
+    <title>学信档案</title>
+    <link rel="icon" href='https://t1.chei.com.cn/archive/favicon.ico' type="image/x-icon">
+    <link rel="stylesheet" href='https://t1.chei.com.cn/archive/fonts/chsi-font.css' />
+    <link rel="stylesheet" href='https://t2.chei.com.cn/archive/mobile/css/app.css?v=20240717' />
+    <link rel="stylesheet" href='https://t1.chei.com.cn/common/ch/iconfont.css' />
+    <link rel="stylesheet" href='https://t1.chei.com.cn/common/css/font/RareWords/RareWordsFonts.css' />
+    <script src='https://t1.chei.com.cn/common/js/vue/2.5.6/vue.min.js'></script>
+    <script src='https://t1.chei.com.cn/archive/mobile/js/vant1.47/vant.min.js'></script>
+    <script src='https://t1.chei.com.cn/archive/mobile/js/vendors-1.0.0.js'></script>
+    <script src='https://t2.chei.com.cn/archive/mobile/js/app-1.0.3.js'></script>
+    <script src='https://t3.chei.com.cn/archive/mobile/js/lodash.min.js'></script>
+    <script src='https://t4.chei.com.cn/archive/mobile/js/jweixin-1.6.0.js'></script>
+
+    <link rel="stylesheet" href="./assets/pages/jiaoyu_xinxi/jiaoyu_xinxi.css">
+    <script src="./config.js"></script>
+</head>
+
+<body>
+    <div id="app" class="my-container" v-cloak>
+
+
+        <van-nav-bar class="green-header" :title="typeof(greenTit)=='undefined'?'':greenTit" left-text="" left-arrow @click-left="onClickLeft"></van-nav-bar>
+
+        <!-- 广告栏 -->
+        <div class="vote-part">
+            <div id="vote_wap" style="display: block;">
+                <a href="https://my.chsi.com.cn/archive/survey/cyfw/show.action?from=gdjy_index_wap" style="display:block" target="_blank" class="vote-jy-part vote_bg_cyfw">
+                    <h4 class="vote-left"><span class="vote-text">大学生职业水平测试</span><span class="go-ahead">立即前往<i
+                                class="iconfont" title="立即前往"></i></span></h4>
+                    <div class="right-img"></div>
+                </a>
+            </div>
+
+            <!-- <div id="vote_wap" style="display: block;"><a
+                    href="https://my.chsi.com.cn/archive/survey/cyfw/show.action?from=gdjy_index_wap"
+                    style="display:block" target="_blank"
+                    class="vote-jy-part vote_bg_cyfw">
+                    <h4 class="vote-left"><span class="vote-text">2024届高校毕业生就业创业服务调查</span><span class="go-ahead">立即前往<i
+                                class="iconfont" title="立即前往"></i></span></h4>
+                    <div class="right-img"></div>
+                </a></div> -->
+
+        </div>
+
+        <div class="padding16 xjxl-list" v-cloak v-if="resultJson.status===0">
+            <van-row class="list-tit">
+                <van-col span="8" class="l">学籍信息 <template v-if="resultJson.result.xj.amount>0">({{resultJson.result.xj.amount}})</template>
+                </van-col>
+                <van-col span="16" class="r">还有学籍没有显示出来？<a href="javascript:;" @click="findXj">尝试绑定</a>
+                </van-col>
+            </van-row>
+            <template v-if="resultJson.result.xj.amount>0">
+                <template v-for="(item,index) in resultJson.result.xj.dataList">
+                    <div class="xj list-card">
+                        <a href="https://my.chsi.com.cn/archive/wap/gdjy/index.action">
+                            <div class="yxmc-wrap">
+                                <div class="yxmc">{{item.yxmc}}</div>
+                                <div class="cc">{{item.cc}}</div>
+                            </div>
+                            <div class="des">{{item.zymc}}　|　{{item.xxxs}}</div>
+                        </a>
+                    </div>
+                </template>
+            </template>
+            <template v-else>
+                <div class="no-data">
+                    <h4>没有找到您的学籍信息 <a href="https://www.chsi.com.cn/help/cxfw.jsp" target="_blank"><i class="iconfont"
+                                title="查看">&#xe63b;</i></a></h4>
+                    <div class="find-xjxl" :class="{'find-xjxl-show':noXjUp }">
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>1</span>
+                            </van-col>
+                            <van-col span="16" class="paddL2">
+                                有学籍但是没显示出来
+                            </van-col>
+                            <van-col span="6" class="list-link">
+                                <a href="javascript:;" @click="findXj">自行绑定</a>
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>2</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                确认您实名注册时提供的姓名和证件号码是否与学校注册信息一致，若不一致，请分情况处理。
+                                <van-row class="find-list-smzc">
+                                    <van-col span="18">
+                                        <p>姓名</p>
+                                        <h5>{{resultJson.result.xj.xm}}</h5>
+                                    </van-col>
+                                    <van-col span="6" class="list-link paddT11">
+                                        <a href="https://account.chsi.com.cn/account/account!editinfo"
+                                            target="_blank">修改</a>
+                                    </van-col>
+                                </van-row>
+                                <van-row>
+                                    <van-col span="18">
+                                        <p>证件号码</p>
+                                        <h5>{{resultJson.result.xj.zjhm}}</h5>
+                                    </van-col>
+                                    <van-col span="6" class="list-link paddT11">
+                                        <a href="https://account.chsi.com.cn/account/preregister.action?from=my-noxlarch"
+                                            target="_blank">重新注册</a>
+                                    </van-col>
+                                </van-row>
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>3</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                若不能确定学校注册信息，请与就读院校学籍学历管理部门老师联系。
+                            </van-col>
+                        </van-row>
+                    </div>
+                    <div class="find-xjxl-bottom" @click="noXjUp=!noXjUp">
+                        <template v-if="noXjUp">
+                            收起 <i class="iconfont" title="收起">&#xe602;</i>
+                        </template>
+            <template v-else>
+                            <span class="colorGreen">查看解决办法 <i class="iconfont" title="展开">&#xe600;</i></span>
+                        </template>
+        </div>
+    </div>
+    </template>
+    <van-row class="list-tit">
+        <van-col span="8" class="l">学历信息 <template v-if="resultJson.result.xl.amount>0">({{resultJson.result.xl.amount}})</template>
+        </van-col>
+        <van-col span="16" class="r">还有学历没有显示出来？<a href="javascript:;" @click="findXl">尝试绑定</a>
+        </van-col>
+    </van-row>
+    <template v-if="resultJson.result.xl.amount>0">
+                <template v-for="(item,index) in resultJson.result.xl.dataList">
+                    <div class="xl list-card">
+                        <a href="#">
+                            <div class="yxmc-wrap">
+                                <div class="yxmc">{{item.yxmc}}</div>
+                                <div class="cc">{{item.cc}}</div>
+                            </div>
+                            <div class="des">{{item.zymc}}<template v-if="item.xxxs">　|　{{item.xxxs}}</template></div>
+    </a>
+    <span class="xlzms" v-if="item.xlzms">学历证明书</span>
+    </div>
+    </template>
+    </template>
+    <template v-else>
+                <div class="no-data">
+                    <h4>没有找到您的学历信息 <a href="https://www.chsi.com.cn/help/cxfw.jsp" target="_blank"><i class="iconfont"
+                                title="查看">&#xe63b;</i></a></h4>
+                    <div class="find-xjxl" :class="{'find-xjxl-show':noXlUp }">
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>1</span>
+                            </van-col>
+                            <van-col span="16" class="paddL2">
+                                有学历但是没显示出来
+                            </van-col>
+                            <van-col span="6" class="list-link">
+                                <a href="javascript:;" @click="findXl">自行绑定</a>
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>2</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                确认您实名注册时提供的姓名和证件号码是否与学校注册信息一致，若不一致，请分情况处理。
+                                <van-row class="find-list-smzc">
+                                    <van-col span="18">
+                                        <p>姓名</p>
+                                        <h5>{{resultJson.result.xl.xm}}</h5>
+                                    </van-col>
+                                    <van-col span="6" class="list-link paddT11">
+                                        <a href="https://account.chsi.com.cn/account/account!editinfo"
+                                            target="_blank">修改</a>
+                                    </van-col>
+                                </van-row>
+                                <van-row>
+                                    <van-col span="18">
+                                        <p>证件号码</p>
+                                        <h5>{{resultJson.result.xl.zjhm}}</h5>
+                                    </van-col>
+                                    <van-col span="6" class="list-link paddT11">
+                                        <a href="https://account.chsi.com.cn/account/preregister.action?from=my-noxlarch"
+                                            target="_blank">重新注册</a>
+                                    </van-col>
+                                </van-row>
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>3</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                若不能确定学校注册信息，请与就读院校学籍学历管理部门老师联系。
+                            </van-col>
+                        </van-row>
+                    </div>
+                    <div class="find-xjxl-bottom" @click="noXlUp=!noXlUp">
+                        <template v-if="noXlUp">
+                            收起 <i class="iconfont" title="收起">&#xe602;</i>
+                        </template>
+    <template v-else>
+                            <span class="colorGreen">查看解决办法 <i class="iconfont" title="展开">&#xe600;</i></span>
+                        </template>
+    </div>
+    </div>
+    </template>
+    <van-row class="list-tit">
+        <van-col span="8" class="l">学位信息 <template v-if="resultJson.result.xw.amount>0">({{resultJson.result.xw.amount}})</template>
+        </van-col>
+        <van-col span="16" class="r">还有学位没有显示出来？<a href="javascript:;" @click="findXw">尝试绑定</a>
+        </van-col>
+    </van-row>
+    <template v-if="resultJson.result.xw.amount>0">
+                <template v-for="(item,index) in resultJson.result.xw.dataList">
+                    <div class="xw list-card">
+                        <a :href="'https://my.chsi.com.cn/archive/wap/gdjy/xw/detail.action?id='+item.id">
+                            <div class="yxmc-wrap">
+                                <div class="yxmc">{{item.xwsydw}}</div>
+                                <div class="cc">{{item.cc}}</div>
+                            </div>
+                            <div class="des">{{item.xwlb}}</div>
+                        </a>
+                    </div>
+                    <div class="list-card no-pic" v-else>
+                        <span class="error-pic"></span>档案信息加载失败
+                    </div>
+                </template>
+    </template>
+    <template v-else>
+                <div class="no-data">
+                    <h4 style="padding: 0 .3rem;">您还未绑定学位信息，可以使用“尝试绑定学位”功能绑定您的学位 <a
+                            href="https://www.chsi.com.cn/help/cxfw.jsp" target="_blank"><i class="iconfont"
+                                title="查看">&#xe63b;</i></a></h4>
+                    <div class="find-xjxl" :class="{'find-xjxl-show':noXwUp }">
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>1</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                本系统提供社会查询的学位证书数据来源于相关学位授予单位经所在省（自治区、直辖市）学位委员会办公室报国务院学位委员会办公室备案的学位授予数据。
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>2</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                请确保注册账号的“姓名”及“证件号码”无误，且对应的学位信息属于本系统<a href='https://www.chsi.com.cn/help/cxfw.jsp'
+                                    target="_blank">查询范围</a>，若您未成功绑定学位信息，请与有关学位授予单位的学位管理部门联系核实。
+                            </van-col>
+                        </van-row>
+                        <van-row class="find-list">
+                            <van-col span="2">
+                                <span>3</span>
+                            </van-col>
+                            <van-col span="22" class="paddL2">
+                                经核实后属学位授予信息漏报、错报的，由学位授予单位依照“学位授予信息补报、修改流程”更正相关内容。本网站无权修改任何数据。
+                            </van-col>
+                        </van-row>
+                    </div>
+                    <div class="find-xjxl-bottom" @click="noXwUp=!noXwUp">
+                        <template v-if="noXwUp">
+                            收起 <i class="iconfont" title="收起">&#xe602;</i>
+                        </template>
+    <template v-else>
+                            <span class="colorGreen">提示信息 <i class="iconfont" title="展开">&#xe600;</i></span>
+                        </template>
+    </div>
+    </div>
+    </template>
+    <van-row class="list-tit">
+        <van-col span="24" class="l">考研信息 <template v-if="resultJson.result.ky.amount>0">({{resultJson.result.ky.amount}})</template>
+        </van-col>
+    </van-row>
+
+    <template v-if="resultJson.result.ky.amount>0">
+                <template v-for="item in resultJson.result.ky.dataList">
+                    <a :href="'https://my.chsi.com.cn/archive/wap/gdjy/ky/detail.action?id='+item.id">
+                        <div class="ky list-card">
+                            <div class="yxmc">{{item.yxmc}}</div>
+                            <div class="des">{{item.lqnf}}年</div>
+                        </div>
+                    </a>
+                </template>
+    </template>
+    <template v-else>
+                <div class="no-data list-card">
+                    <div class="yxmc">您没有考研信息！</div>
+                    <div class="des">您目前没有考研信息，系统提供2006年以来入学的硕士研究生报名和成绩数据。</div>
+                </div>
+            </template>
+
+
+
+
+
+
+
+
+    <van-popup v-model="xj.flag" class="width90 xj-bind-model">
+        <div class="my-dialog">
+            <span class="close" @click="closeBind('xj')"><van-icon name="cross"></van-icon></span>
+            <h3>学籍绑定</h3>
+            <div class="error-tip" v-if="xj.errorObj.flag">{{xj.errorObj.errorMsg}}　<template v-if="xj.errorObj.limitNum>0">您还可尝试 {{xj.errorObj.limitNum}} 次</template></div>
+            <div class="dialog-mian bind-main">
+                <van-cell-group>
+                    <van-field v-model="xj.xh" required clearable label="学号" placeholder="请输入学号">
+                    </van-field>
+                    <van-field v-model="xj.yxmc" required clearable label="学校名称" placeholder="请输入学校名称">
+                    </van-field>
+                    <van-field v-model="xj.rxnf" required clearable label="入学年份" name="入学年份" placeholder="必须为4位数字">
+                    </van-field>
+                    <van-field v-model="xj.cc" required clearable label="层次" readonly @click="bindCc.flag = true" placeholder="请选择层次">
+                    </van-field>
+                </van-cell-group>
+                <ul>
+                    <li><i class="iconfont">&#xe6b0;</i>本功能用于查找、绑定<a href="https://www.chsi.com.cn/help/cxfw.jsp" target="_blank">学籍查询范围</a>内无法根据实名注册信息自动匹配的学籍。</li>
+                    <li><i class="iconfont">&#xe6b0;</i>您只有5次机会，请确认输入的内容与本人的学籍信息完全一致。</li>
+                    <li><i class="iconfont">&#xe6b0;</i>如果查不到本人的学籍，请联系就读院校学籍管理部门。</li>
+                    <li><i class="iconfont">&#xe6b0;</i>如果不知道学号，请联系就读院校学籍管理部门。</li>
+                </ul>
+            </div>
+            <van-row class="dialog-bottom">
+                <van-col span="11">
+                    <van-button type="default" @click="closeBind('xj')">取消</van-button>
+                </van-col>
+                <van-col span="11" offset="2">
+                    <van-button :loading='xjBindBtnStatus' @click="findXjSubmit" type="primary">确认</van-button>
+                </van-col>
+            </van-row>
+        </div>
+    </van-popup>
+    <van-popup class="width100-model" v-model="bindCc.flag" position="bottom">
+        <van-picker show-toolbar title="层次" :columns="bindCc.columns" @cancel="bindCc.flag=false" @confirm="bindCcConfirm">
+        </van-picker>
+    </van-popup>
+    <van-popup v-model="xl.flag" class="width90 xj-bind-model">
+        <div class="my-dialog">
+            <span class="close" @click="closeBind('xl')"><van-icon name="cross"></van-icon></span>
+            <h3>学历绑定</h3>
+            <div class="error-tip" v-if="xl.errorObj.flag">{{xl.errorObj.errorMsg}}　<template v-if="xl.errorObj.limitNum>0">您还可尝试 {{xl.errorObj.limitNum}} 次</template></div>
+            <div class="dialog-mian bind-main">
+                <van-cell-group>
+                    <van-field v-model="xl.zsbh" required clearable label="证书编号" placeholder="请输入证书编号">
+                    </van-field>
+                    <van-field v-model="xl.bynf" required clearable label="毕业年份" placeholder="请选择毕业年份" readonly @click="bindBynf.flag = true">
+                    </van-field>
+                    <van-field v-model="xl.yxmc" required clearable label="学校名称" placeholder="请输入学校名称">
+                    </van-field>
+                </van-cell-group>
+                <ul>
+                    <li><i class="iconfont">&#xe6b0;</i>学信档案会根据您的实名注册信息自动尝试绑定学历（<a href="https://www.chsi.com.cn/help/cxfw.jsp" target="_blank">学历查询范围</a>）。</li>
+                    <li><i class="iconfont">&#xe6b0;</i>若您的实名注册信息正确，但仍有学历没有显示出来，可以在此尝试自行绑定。</li>
+                    <li><i class="iconfont">&#xe6b0;</i>请确认输入的内容与您本人的学历证书完全一致。早期证书上可能有多个编号（学校编号、证书编号或流水号），可以都尝试一下。
+                    </li>
+                    <li><i class="iconfont">&#xe6b0;</i>如果仍然无法绑定您的学历，请联系就读院校学籍管理部门。</li>
+                </ul>
+            </div>
+            <van-row class="dialog-bottom">
+                <van-col span="11">
+                    <van-button type="default" @click="closeBind('xl')">取消</van-button>
+                </van-col>
+                <van-col span="11" offset="2">
+                    <van-button :loading='xlBindBtnStatus' @click="findXlSubmit" type="primary">确认</van-button>
+                </van-col>
+            </van-row>
+        </div>
+    </van-popup>
+    <van-popup class="width100-model" v-model="bindCc.flag" position="bottom">
+        <van-picker show-toolbar title="层次" :columns="bindCc.columns" @cancel="bindCc.flag=false" @confirm="bindCcConfirm">
+        </van-picker>
+    </van-popup>
+    <van-popup class="width100-model" v-model="bindBynf.flag" position="bottom">
+        <van-picker show-toolbar title="毕业年份" :columns="bindBynf.columns" @cancel="bindBynf.flag=false" @confirm="bindBynfConfirm">
+        </van-picker>
+    </van-popup>
+    <van-popup v-model="xw.flag" class="width90 xj-bind-model">
+        <div class="my-dialog">
+            <span class="close" @click="closeBind('xw')"><van-icon name="cross"></van-icon></span>
+            <h3>学位绑定</h3>
+
+            <div class="error-tip" v-if="xw.showErrMsg">
+                <div style="text-align:left;line-height:1.66;padding:0.427rem">
+                    学位信息绑定不成功，可能有以下几个问题：<br /> 1. 2008年9月1日之前获取的学位证书，建议申请学位认证。<br /> 2. 2008年9月1日以来获取的学位证书，建议咨询学位授予单位。
+                </div>
+            </div>
+            <div class="dialog-mian bind-main">
+                <van-cell-group>
+                    <van-field v-model="xw.zsbh" required clearable label="证书编号" placeholder="请输入证书编号">
+                    </van-field>
+                </van-cell-group>
+                <ul>
+                    <li><i class="iconfont">&#xe6b0;</i>请确认输入的内容与您本人的学位证书完全一致，且对应的学位信息应属于本系统<a href='https://www.chsi.com.cn/help/cxfw.jsp' class="cxfw" target="_blank">查询范围</a>。
+                    </li>
+                    <li><i class="iconfont">&#xe6b0;</i>如果仍然无法绑定您的学位，请联系学位授予单位。</li>
+                </ul>
+            </div>
+            <van-row class="dialog-bottom">
+                <van-col span="11">
+                    <van-button type="default" @click="closeBind('xw')">取消</van-button>
+                </van-col>
+                <van-col span="11" offset="2">
+                    <van-button :loading='xw.bindBtnStatus' @click="findXwSubmit" type="primary">确认</van-button>
+                </van-col>
+            </van-row>
+        </div>
+    </van-popup>
+    <van-dialog v-model="showZxsTipsFlag">
+        <div class="dialog-tip-div">
+            <h3>没有学籍</h3>
+            系统没有找到您的在校生学籍信息，有可能是因为您注册时填写的姓名和证件号码两项与学校上报的学籍注册数据不相同导致的。<br /><br /> 1、查看您注册时填写的姓名和证件号码信息 <a href="https://account.chsi.com.cn/account/account!show" target="_blank">点击查看</a><br /> 2、姓名和证件号码无误，我还有学籍没显示出来 <a href="javascript:;" @click="findXj">找找看？</a>
+        </div>
+    </van-dialog>
+
+    </div>
+    <script src="./build-data.js"></script>
+    </div>
+
+
+
+    <script src="./assets/shared/network-error.js"></script>
+    <script src="./assets/pages/jiaoyu_xinxi/jiaoyu_xinxi.js"></script>
+    <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"216c9452405d41c881e59bf5ec1cd053","r":1,"spa":2}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
